@@ -8,51 +8,6 @@ Data for:
 > and associated particulate C, N, and P. Global Biogeochemical Cycles,
 > 19(4).
 
-``` reval
-library(tabulizer)
-
-inpath <- "Beusen et al. - 2005 - Estimation of global river transport of sediments .pdf"
-
-table_a1 <- tabulizer::extract_tables(
-  inpath,
-  pages = 13:15,
-  columns = list(c(300)),
-  output = "data.frame")
-
-saveRDS(table_a1, "table_a1.rds")
-```
-
-``` r
-library(janitor)
-library(dplyr)
-library(tidyr)
-
-table_a1 <- readRDS("table_a1.rds")
-
-make_table <- function(dt){
-  dt <- janitor::remove_empty(dt)
-  
-  if(suppressWarnings(
-    !all(is.na(
-      tidyr::separate(dt, 1, c("a", "b"), sep = "\\s(?=\\d)")[,c("b")])))){
-    dt <- tidyr::separate(dt, 1, c("a", "b"), sep = "\\s(?=\\d)", convert = TRUE)
-  }
-  
-  dt[,3]  <- coalesce(dt[,3], dt[,4])
-  dt      <- dt[,-4]
-  dt      <- setNames(dt, 
-           c("name", "basin_area_1000km2", "tss_tonkm2y1", 
-             "trapping_eff", "fournier_precip_mmd1", "fournier_slope_mkm1",
-             "lithology_class", "grass_pct", "wetland_rice_pct", 
-             "poc_pred_tonkmyr1", "pn_pred_tonkmyr1", "pp_pred_tonkmyr1", 
-             "source"))
-}
-
-table_a1 <- lapply(table_a1, make_table)
-table_a1 <- bind_rows(table_a1)
-write.csv(table_a1, "table_a1.csv", row.names = FALSE)
-```
-
     #> # Description: data.frame [126 × 13] 
     #>    ---------------------------printing row #1---------------------------
     #>    name  basin_area_1000… tss_tonkm2y1 trapping_eff fournier_precip…

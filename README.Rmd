@@ -16,7 +16,7 @@ Data for:
 
 > Beusen, A.H.W., Dekkers, A.L.M., Bouwman, A.F., Ludwig, W. and Harrison, J., 2005. Estimation of global river transport of sediments and associated particulate C, N, and P. Global Biogeochemical Cycles, 19(4).
 
-```{reval=FALSE}
+```{reval=FALSE, echo=FALSE}
 library(tabulizer)
 
 inpath <- "Beusen et al. - 2005 - Estimation of global river transport of sediments .pdf"
@@ -30,7 +30,7 @@ table_a1 <- tabulizer::extract_tables(
 saveRDS(table_a1, "table_a1.rds")
 ```
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE}
 library(janitor)
 library(dplyr)
 library(tidyr)
